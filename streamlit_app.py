@@ -90,3 +90,24 @@ def analyze_stock(ticker):
         "Resistance": round(high, 2),
         "RSI": round(rsi_last, 1)
     }
+
+tickers = [
+"CLS","GFS","AMZN","AVGO","AMKR","NOK","MU","TSM","AEHR",
+"IREN","BE","AAOI","COHR","ANET","MCHP","TXN","ASX",
+"ENPH","VPG","NVTS","ON","HIMX","STM"
+]
+
+results = []
+
+for t in tickers:
+    res = analyze_stock(t)
+    if res:
+        results.append(res)
+
+df_result = pd.DataFrame(results)
+
+# 排序
+df_result = df_result.sort_values(by="Score", ascending=False)
+
+# TOP 5
+top5 = df_result.head(5)
