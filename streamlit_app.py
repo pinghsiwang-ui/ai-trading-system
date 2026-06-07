@@ -57,8 +57,6 @@ if any(pd.isna([price, ma200_last, low])):
     st.warning("数据异常")
     st.stop()
 
-score = 0
-
 if (price - low)/price < 0.03:
     score += 25
 elif price > df['MA50'].iloc[-1]:
