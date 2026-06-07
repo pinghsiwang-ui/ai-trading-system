@@ -22,20 +22,20 @@ df['MA20'] = df['Close'].rolling(20).mean()
 df['MA50'] = df['Close'].rolling(50).mean()
 df['MA200'] = df['Close'].rolling(200).mean()
 
+# === 统一使用一维数据 ===
 close = df['Close'].squeeze()
 
-df['MA20'] = close.rolling(20).mean()
-df['MA50'] = close.rolling(50).mean()
-df['MA200'] = close.rolling(200).mean()
+ma20 = close.rolling(20).mean()
+ma50 = close.rolling(50).mean()
+ma200 = close.rolling(200).mean()
 
-df['RSI'] = ta.momentum.RSIIndicator(close).rsi()
+rsi = ta.momentum.RSIIndicator(close).rsi()
 
-macd = ta.trend.MACD(close)
-df['MACD'] = macd.macd()
+macd = ta.trend.MACD(close).macd()
 
-price = df['Close'].iloc[-1]
-low = df['Low'].tail(20).min()
-high = df['High'].tail(20).max()
+price = float(close.iloc[-1])
+ma200_last = float(ma200.iloc[-1])
+ma50_last = float(ma50.iloc[-1])
 
 score = 0
 
