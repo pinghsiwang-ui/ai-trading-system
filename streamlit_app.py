@@ -22,8 +22,15 @@ df['MA20'] = df['Close'].rolling(20).mean()
 df['MA50'] = df['Close'].rolling(50).mean()
 df['MA200'] = df['Close'].rolling(200).mean()
 
-df['RSI'] = ta.momentum.RSIIndicator(df['Close']).rsi()
-macd = ta.trend.MACD(df['Close'])
+close = df['Close'].squeeze()
+
+df['MA20'] = close.rolling(20).mean()
+df['MA50'] = close.rolling(50).mean()
+df['MA200'] = close.rolling(200).mean()
+
+df['RSI'] = ta.momentum.RSIIndicator(close).rsi()
+
+macd = ta.trend.MACD(close)
 df['MACD'] = macd.macd()
 
 price = df['Close'].iloc[-1]
