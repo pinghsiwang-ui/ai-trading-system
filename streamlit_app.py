@@ -22,8 +22,17 @@ df['MA20'] = df['Close'].rolling(20).mean()
 df['MA50'] = df['Close'].rolling(50).mean()
 df['MA200'] = df['Close'].rolling(200).mean()
 
-# === 数据处理（统一安全版）===
+# === 数据统一处理（终极稳定版） ===
+
+# 保证一维
 close = df['Close'].squeeze()
+low_series = df['Low'].squeeze()
+high_series = df['High'].squeeze()
+
+# 防空数据
+if close.empty or len(close) < 50:
+    st.error("数据不足")
+    st.stop()
 
 # 均线
 ma20 = close.rolling(20).mean()
@@ -34,14 +43,19 @@ ma200 = close.rolling(200).mean()
 rsi = ta.momentum.RSIIndicator(close).rsi()
 macd = ta.trend.MACD(close).macd()
 
-# 当前值（全部转float，防崩）
+# 当前值（全部转标量）
 price = float(close.iloc[-1])
 ma200_last = float(ma200.iloc[-1])
 ma50_last = float(ma50.iloc[-1])
 
-# 支撑 / 压力
-low = float(df['Low'].tail(20).min())
-high = float(df['High'].tail(20).max())
+# 支撑/压力（关键修复）
+low = float(low_series.tail(20).min())
+high = float(high_series.tail(20).max())
+
+# 防NaN
+if any(pd.isna([price, ma200_last, low])):
+    st.warning("数据异常")
+    st.stop()
 
 score = 0
 
