@@ -45,7 +45,7 @@ high = float(df['High'].tail(20).max())
 
 score = 0
 
-if price > df['MA200'].iloc[-1]:
+if (price - low)/price < 0.03:
     score += 25
 elif price > df['MA50'].iloc[-1]:
     score += 15
